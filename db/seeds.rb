@@ -1,6 +1,35 @@
 include LeadsHelper
+
+# Fill lead source groups                id
+LeadSourceGroup.create(name: 'leaderssl') #1
+LeadSourceGroup.create(name: 'getucc')    #2
+
+# Fill lead sources
+lead_sources = [                                                #id
+    { name: 'www.leaderssl.com',     lead_sources_group_id: 1}, #1
+    { name: 'newsite.instantssl.su', lead_sources_group_id: 1}, #2
+    { name: ' www.leaderssl.nl',     lead_sources_group_id: 1}, #3
+    { name: 'www.leaderssl.com.ua',  lead_sources_group_id: 1}, #4
+    { name: 'www.leaderssl.sg',      lead_sources_group_id: 1}, #5
+    { name: 'www.leaderssl.de',      lead_sources_group_id: 1}, #6
+    { name: 'www.leaderssl.be',      lead_sources_group_id: 1}, #7
+    { name: 'www.leaderssl.fr',      lead_sources_group_id: 1}, #8
+    { name: 'www.leaderssl.co.uk',   lead_sources_group_id: 1}, #9
+    { name: 'ca.leaderssl.com',      lead_sources_group_id: 1}, #10
+    { name: 'www.leaderssl.us',      lead_sources_group_id: 1}, #11
+    { name: 'www.leaderssl.cz',      lead_sources_group_id: 1}, #12
+    { name: 'www.leaderssl.gr',      lead_sources_group_id: 1}, #13
+    { name: 'www.leaderssl.ie',      lead_sources_group_id: 1}, #14
+    { name: 'www.leaderssl.ch',      lead_sources_group_id: 1}, #15
+    { name: 'www.leaderssl.si',      lead_sources_group_id: 1}, #16
+    { name: 'www.leaderssl.es',      lead_sources_group_id: 1}, #17
+    { name: 'www.getucc.com',        lead_sources_group_id: 2}, #18
+    { name: 'www.getwildcard.com',   lead_sources_group_id: 2}  #19
+]
+
+
 # Fill Buisness Enteties
-busines_enteties = [
+busines_enteties = [                                          #id
     { name: 'Microsoft', name_short: 'MS' },                  #1
     { name: 'Apple Inc', name_short: 'Apple' },               #2
     { name: 'JetBrains Company', name_short: 'JetBrains' },   #3
