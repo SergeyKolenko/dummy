@@ -2,19 +2,19 @@
   <div class="control-group">
     <%= f.label :interested_company_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.number_field :interested_company_id, :class => 'number_field' %>
+      <%= f.collection_select :interested_company_id, BusinessEntity.all, :id, :name_short_or_name, :class => 'select_field' %>
     </div>
   </div>
   <div class="control-group">
     <%= f.label :lead_source, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :lead_source, :class => 'text_field' %>
+      <%= f.grouped_collection_select :lead_source_id, LeadSourceGroup.all, :lead_sources, :name, :id, :name, :class => 'text_field' %>
     </div>
   </div>
   <div class="control-group">
     <%= f.label :status, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :status, :class => 'text_field' %>
+      <%= f.text_field :status, :class => 'select_field' %>
     </div>
   </div>
   <div class="control-group">

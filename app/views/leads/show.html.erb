@@ -7,7 +7,7 @@
   <dt><strong><%= model_class.human_attribute_name(:interested_company_id) %>:</strong></dt>
   <dd><%= @lead.interested_company_id %></dd>
   <dt><strong><%= model_class.human_attribute_name(:lead_source) %>:</strong></dt>
-  <dd><%= @lead.lead_source %></dd>
+  <dd><%= @lead.lead_source.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= @lead.status %></dd>
   <dt><strong><%= model_class.human_attribute_name(:contract_id) %>:</strong></dt>

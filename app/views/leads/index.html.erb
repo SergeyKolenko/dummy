@@ -19,7 +19,7 @@
       <tr>
         <td><%= link_to lead.id, lead_path(lead) %></td>
         <td><%= lead.interested_company.name_short_or_name %></td>
-        <td><%= lead.lead_source %></td>
+        <td><%= lead.lead_source.name %></td>
         <td><%= lead.status %></td>
         <td><%= lead.contract_id %></td>
         <td><%= lead.created_at.strftime("%a, %d %B %Y") %></td>

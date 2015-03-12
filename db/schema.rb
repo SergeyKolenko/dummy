@@ -28,14 +28,14 @@ ActiveRecord::Schema.define(:version => 20150311153501) do
 
   create_table "lead_sources", :force => true do |t|
     t.string   "name"
-    t.integer  "lead_source_group_id_id"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.integer  "lead_source_group_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "leads", :force => true do |t|
     t.integer  "interested_company_id"
-    t.string   "lead_source"
+    t.integer  "lead_source_id"
     t.string   "status"
     t.integer  "contract_id"
     t.datetime "created_at",            :null => false
