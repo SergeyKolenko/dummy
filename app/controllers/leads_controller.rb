@@ -1,4 +1,7 @@
 class LeadsController < ApplicationController
+
+  before_filter :set_lead_sources, only: [:new, :edit, :daily_new]
+
   # GET /leads
   # GET /leads.json
   def index
@@ -87,11 +90,15 @@ class LeadsController < ApplicationController
   end
 
   def daily_create
-    @leads = Lead.select(%{ "leads"."created_at", COUNT("leads"."id") as cnt })
-                 .where(%{ "leads"."created_at" BETWEEN #{DateTime.strptime params[:date_from], '%m/%d/%Y'}
-                                                AND #{DateTime.strptime params[:date_to], '%m/%d/%Y'} })
-                 .group(%{ "leads"."id" })
-    @business_entities = BusinessEntity.all
+    @report = Lead.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
+                  .where(created_at: DateTime.strptime( params[:date_from], '%m/%d/%Y').beginning_of_day..DateTime.strptime( params[:date_to], '%m/%d/%Y').end_of_day,
+                         interested_company_id: params[:business_entities])
+                  .group(%{ date })
+  end
+
+  private
+  def set_lead_sources
+    @lead_sources = LeadSource.for_select
   end
 
 end

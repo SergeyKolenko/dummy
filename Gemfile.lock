@@ -55,6 +55,7 @@ GEM
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     ffi (1.9.6)
+    googlecharts (1.6.10)
     hike (1.2.3)
     i18n (0.7.0)
     jbuilder (2.2.8)
@@ -172,6 +173,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   database_cleaner
   factory_girl_rails
+  googlecharts
   jbuilder (~> 2.0)
   jquery-rails
   rails (= 3.2.21)

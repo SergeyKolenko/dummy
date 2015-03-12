@@ -5,4 +5,13 @@ class LeadSource < ActiveRecord::Base
 
   validates :name, presence: true
   validates_associated :lead_source_group
+
+  def self.for_select
+    sources = self.all
+    sources.inject({}) do |options, lead_source|
+      (options[lead_source.lead_source_group.name] ||= []) << [lead_source.name, lead_source.id]
+      options
+    end
+  end
+
 end

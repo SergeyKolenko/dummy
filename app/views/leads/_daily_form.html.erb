@@ -1,14 +1,3 @@
-<%# TODO: This groups must store in DB  %>
-<% grouped_options ={
-       'leaderssl' => %w(www.leaderssl.com newsite.instantssl.su www.leaderssl.nl
-                              www.leaderssl.com.ua www.leaderssl.sg www.leaderssl.de www.leaderssl.be
-                              www.leaderssl.fr www.leaderssl.co.uk ca.leaderssl.com www.leaderssl.us
-                              www.leaderssl.cz www.leaderssl.gr www.leaderssl.ie www.leaderssl.ch
-                              www.leaderssl.si www.leaderssl.es),
-       'getucc' => %w(www.getucc.com www.getucc.com.uk)
-   }
-%>
-
 <%= form_tag daily_leads_path,  method: :post, :remote => true do %>
     <strong>Date range:</strong>
     <div class="control-group">
@@ -25,7 +14,7 @@
     <div class="control-group">
       <%= label_tag :business_entities, 'Business Entries',  :class => 'control-label' %>
       <div class="controls">
-        <%= select_tag :business_entities, options_from_collection_for_select(@business_entities, 'id', 'name_short_or_name'),  :class => 'select2 text_field', :multiple => true %>
+        <%= select_tag :business_entities, options_from_collection_for_select(@business_entities, 'id', 'name_short_or_name'),  :class => 'select2 select_field', :multiple => true %>
         <label class="checkbox">
             <input type="checkbox" id="all_business_entities">all</input>
         </label>
@@ -35,8 +24,7 @@
     <div class="control-group">
       <%= label_tag :lead_sources, 'Lead sources', :class => 'control-label' %>
       <div class="control-group">
-        <%# TODO: need using option_groups_from_collection_for_select from DB %>
-        <%= select_tag :leads_sources, grouped_options_for_select(grouped_options) ,:class => 'select2 text_field', :multiple => true %>
+        <%= select_tag :leads_sources, grouped_options_for_select(@lead_sources) ,:class => 'select2 select_field', :multiple => true %>
       </div>
     </div>
 

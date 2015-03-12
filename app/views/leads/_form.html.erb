@@ -8,7 +8,7 @@
   <div class="control-group">
     <%= f.label :lead_source, :class => 'control-label' %>
     <div class="controls">
-      <%= f.grouped_collection_select :lead_source_id, LeadSourceGroup.all, :lead_sources, :name, :id, :name, :class => 'text_field' %>
+      <%= f.select :lead_source_id, grouped_options_for_select(@lead_sources), :class => 'text_field' %>
     </div>
   </div>
   <div class="control-group">
