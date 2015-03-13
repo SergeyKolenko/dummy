@@ -111,7 +111,20 @@ class LeadsController < ApplicationController
                          interested_company_id: companies,
                           lead_source_id: lead_sources)
                   .group(%{ date })
-    respond_to
+    respond_to do |format|
+      format.js do
+        unless params[:commit].present? && params[:commit] == 'Download as csv'
+          data_table = GoogleVisualr::DataTable.new
+          data_table.new_column('string', 'Date')
+          data_table.new_column('number', 'Count')
+          @report.each do |item|
+            data_table.add_row([item.date, item.cnt])
+          end
+          opts = { :width => 900, :height => 700, :title => 'Daily report', :legend => 'bottom' }
+          @chart = GoogleVisualr::Interactive::LineChart.new(data_table, opts)
+        end
+      end
+    end
   end
 
   private
