@@ -1,5 +1,5 @@
-<h3>Filter:</h3>
-<%= form_tag daily_leads_path,  method: :post, :remote => true do %>
+<h3 xmlns="http://www.w3.org/1999/html">Filter:</h3>
+<%= form_tag daily_leads_path,  method: :post, :id => 'filter_form' do %>
     <strong>Date range:</strong>
     <div class="control-group">
       <%= label_tag :date_from, 'From',  :class => 'control-label' %>
@@ -45,8 +45,10 @@
     </div>
 
     <div class="actions">
-      <%= submit_tag 'Submit' %>
-      <%= submit_tag 'Download as csv'%>
+      <%# submit_tag 'Submit', :class => 'btn btn-primary' %>
+      <%# li 'Download as csv', :class => 'btn', :id => 'download_csv'%>
+      <input type="button" class="btn btn-primary" id="submit" value="Submit">
+      <input type="button" class="btn" id="download_csv" value="Download as csv">
     </div>
 
 <% end %>

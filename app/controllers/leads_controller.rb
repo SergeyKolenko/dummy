@@ -113,23 +113,35 @@ class LeadsController < ApplicationController
                   .group(%{ date })
     respond_to do |format|
       format.js do
-        unless params[:commit].present? && params[:commit] == 'Download as csv'
-          data_table = GoogleVisualr::DataTable.new
-          data_table.new_column('string', 'Date')
-          data_table.new_column('number', 'Leads count')
-          @report.each do |item|
-            data_table.add_row([item.date, item.cnt])
-          end
-          opts = { :width => 900, :height => 700, :title => 'Daily report', :legend => 'bottom' }
-          @chart = GoogleVisualr::Interactive::LineChart.new(data_table, opts)
-        end
+          @chart = build_chart @report
       end
+      format.csv { send_data build_csv(@report), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=leads_daily.csv"}
     end
   end
 
   private
   def set_lead_sources
     @lead_sources = LeadSource.for_select
+  end
+
+  def build_chart report
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('string', 'Date')
+    data_table.new_column('number', 'Leads count')
+    report.each do |item|
+      data_table.add_row([item.date, item.cnt])
+    end
+    opts = { :width => 900, :height => 700, :title => 'Daily report', :legend => 'bottom' }
+    GoogleVisualr::Interactive::LineChart.new(data_table, opts)
+  end
+
+  def build_csv report
+    CSV.generate do |csv|
+      csv << ['Date', 'Leads count']
+      report.each do |item|
+        csv << [item.date, item.cnt]
+      end
+    end
   end
 
 end
