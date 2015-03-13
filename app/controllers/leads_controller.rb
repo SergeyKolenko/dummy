@@ -116,7 +116,7 @@ class LeadsController < ApplicationController
         unless params[:commit].present? && params[:commit] == 'Download as csv'
           data_table = GoogleVisualr::DataTable.new
           data_table.new_column('string', 'Date')
-          data_table.new_column('number', 'Count')
+          data_table.new_column('number', 'Leads count')
           @report.each do |item|
             data_table.add_row([item.date, item.cnt])
           end
