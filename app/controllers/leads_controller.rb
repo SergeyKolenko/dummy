@@ -90,10 +90,28 @@ class LeadsController < ApplicationController
   end
 
   def daily_create
-    @report = Lead.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
-                  .where(created_at: DateTime.strptime( params[:date_from], '%m/%d/%Y').beginning_of_day..DateTime.strptime( params[:date_to], '%m/%d/%Y').end_of_day,
-                         interested_company_id: params[:business_entities])
+    date_from = params[:date_from].blank? ? DateTime.now : DateTime.strptime( params[:date_from], '%m/%d/%Y')
+    date_to = params[:date_to].blank? ? DateTime.now : DateTime.strptime( params[:date_to], '%m/%d/%Y')
+    companies = params[:business_entities].present? ? params[:business_entities] : BusinessEntity.pluck(:id)
+    lead_sources = params[:leads_sources].present? ? params[:leads_sources] : LeadSource.pluck(:id)
+    @report = case params[:lead_status]
+                when 'not_spam'
+                  Lead.not_spam
+                when 'closed'
+                  Lead.closed
+                when 'not_closed'
+                  Lead.opened
+                else
+                  Lead
+              end
+    @report = @report.where("contract_id IS NOT NULL") if params[:converted_to_contract].present?
+    @report = @report.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
+                  .joins(:lead_source)
+                  .where(created_at: date_from.beginning_of_day..date_to.end_of_day,
+                         interested_company_id: companies,
+                          lead_source_id: lead_sources)
                   .group(%{ date })
+    respond_to
   end
 
   private
