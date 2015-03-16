@@ -1,0 +1,6 @@
+if (<%= !@report.nil? %>) {
+    $('#results').html('<%= escape_javascript render partial: 'results' unless @report.nil? -%>');
+} else {
+    $('#invalid').show();
+    $(document).scrollTop(0);
+}

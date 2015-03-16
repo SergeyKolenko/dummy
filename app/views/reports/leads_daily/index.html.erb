@@ -2,10 +2,10 @@
   <h1>Leads Daily</h1>
 </div>
 <div class="alert alert-error" id="invalid">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <button type="button" class="close" onclick="$('#invalid').hide()">&times;</button>
   <strong>Error!</strong> Filter params not valid.
 </div>
-<%= render partial: 'daily_form', locals: { filter: @filter } %>
+<%= render partial: 'form', locals: { filter: @filter } %>
 <div class="span12">
     <hr />
 </div>

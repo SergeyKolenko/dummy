@@ -1,5 +1,5 @@
 <h3 xmlns="http://www.w3.org/1999/html">Filter:</h3>
-<%= form_for :filter, url: daily_leads_path,  method: :post, remote: true, html: {id: 'filter_form'} do  |f|%>
+<%= form_for :filter, url: reports_leads_daily_index_path,  method: :post, remote: true, html: {id: 'filter_form'} do  |f|%>
     <div class="control-group span4">
       <strong>Date range:</strong>
       <%= label_tag :date_from, 'From',  class: 'control-label' %>
@@ -48,7 +48,7 @@
 
     <div class="actions span12">
       <%= f.submit 'Submit', class: 'btn btn-primary' %>
-      <%= link_to 'Download as csv', daily_leads_path(format: :csv), method: :post, class: 'btn', id: 'download_csv' %>
+      <%= link_to 'Download as csv', reports_leads_daily_index_path(format: :csv), method: :post, class: 'btn', id: 'download_csv' %>
     </div>
 
 
