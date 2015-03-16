@@ -1,7 +1,7 @@
 <h3 xmlns="http://www.w3.org/1999/html">Filter:</h3>
 <%= form_for :filter, url: daily_leads_path,  method: :post, remote: true, html: {:id => 'filter_form'} do  |f|%>
-    <strong>Date range:</strong>
-    <div class="control-group">
+    <div class="control-group span4">
+      <strong>Date range:</strong>
       <%= label_tag :date_from, 'From',  :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :date_from, :class => 'datepicker text_field' %>
@@ -12,7 +12,15 @@
       </div>
     </div>
 
-    <div class="control-group">
+    <div class="control-group span4">
+      <%= label_tag :lead_status, 'Lead status', class: 'control-label' %>
+      <%= radio_button :filter, :lead_status, 'all', checked: true %> All <br />
+      <%= radio_button :filter, :lead_status, 'not_spam' %> Not spam <br />
+      <%= radio_button :filter, :lead_status, 'closed' %> closed <br />
+      <%= radio_button :filter, :lead_status, 'not_closed' %> not closed <br />
+    </div>
+
+    <div class="control-group span6">
       <%= label_tag :business_entities, 'Business Entries',  :class => 'control-label' %>
       <div class="controls">
         <%= f.select :business_entities, options_from_collection_for_select(@business_entities, 'id', 'name_short_or_name'), {}, {:class => 'select2 select_field', :multiple => true} %>
@@ -22,34 +30,25 @@
       </div>
     </div>
 
-    <div class="control-group">
+    <div class="control-group span6">
       <%= label_tag :lead_sources, 'Lead sources', :class => 'control-label' %>
       <div class="control-group">
         <%= f.select :leads_sources, grouped_options_for_select(@lead_sources),{}, {:class => 'select2 select_field', :multiple => true} %>
       </div>
     </div>
 
-    <div class="control-group">
-      <%= label_tag :lead_status, 'Lead status', class: 'control-label' %>
-      <%= radio_button :filter, :lead_status, 'all', checked: true %> All
-      <%= radio_button :filter, :lead_status, 'not_spam' %> Not spam
-      <%= radio_button :filter, :lead_status, 'closed' %> closed
-      <%= radio_button :filter, :lead_status, 'not_closed' %> not closed
-    </div>
 
-    <div class="control-group">
+
+    <div class="control-group span4">
       <label class="checkbox">
         <%= f.check_box :converted_to_contract %>
         Converted to contract
       </label>
     </div>
 
-    <div class="actions">
+    <div class="actions span12">
       <%= f.submit 'Submit', :class => 'btn btn-primary' %>
-      <%# f.submit 'Download as csv',  :class => 'btn' %>
       <%= link_to 'Download as csv', daily_leads_path(format: :csv), method: :post, class: 'btn', id: 'download_csv' %>
-      <!--<input type="button" class="btn btn-primary" id="submit" value="Submit">-->
-      <!--<input type="button" class="btn" id="download_csv" value="Download as csv">-->
     </div>
 
 
