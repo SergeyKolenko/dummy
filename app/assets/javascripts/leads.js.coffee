@@ -16,12 +16,15 @@ $ ->
       $(this).attr 'href', $(this).attr('href') + params
     else
       $('#invalid').show()
-      $(document).scrollTop 0
+      $(document).scrollTop(0)
       false
 
 
   is_filter_valid = ->
-    unless $('#filter_date_from').val() || $('#filter_date_to').val() || $('#filter_business_entities').val() || $('#filter_leads_sources').val()
+    unless $('#filter_business_entities').val() || $('#filter_leads_sources').val()
       false
     else
-      true
+      if $('#filter_date_from').val() is "" || $('#filter_date_to').val() is ""
+        false
+      else
+        true

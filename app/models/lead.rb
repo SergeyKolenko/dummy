@@ -1,9 +1,9 @@
 class Lead < ActiveRecord::Base
   attr_accessible :contract_id, :interested_company_id, :lead_source_id, :status
 
-  validates :interested_company, :presence => true
+  validates :interested_company, presence: true
 
-  belongs_to :interested_company, :class_name => 'BusinessEntity'
+  belongs_to :interested_company, class_name: 'BusinessEntity'
   belongs_to :lead_source
 
 

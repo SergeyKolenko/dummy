@@ -115,7 +115,7 @@ class LeadsController < ApplicationController
                     .group(%{ date })
       respond_to do |format|
         format.js { @chart = build_chart @report }
-        format.csv { send_data build_csv(@report), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=leads_daily.csv"}
+        format.csv { send_data build_csv(@report), type: 'text/csv; charset=iso-8859-1; header=present', disposition: "attachment; filename=leads_daily.csv"}
       end
     else
       respond_to do |format|
@@ -139,7 +139,7 @@ class LeadsController < ApplicationController
     report.each do |item|
       data_table.add_row([item.date, item.cnt])
     end
-    opts = { :width => 900, :height => 700, :title => 'Daily report', :legend => 'bottom' }
+    opts = { width: 900, height: 700, title: 'Daily report', legend: 'bottom' }
     GoogleVisualr::Interactive::LineChart.new(data_table, opts)
   end
 
