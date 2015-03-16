@@ -90,11 +90,13 @@ class LeadsController < ApplicationController
   end
 
   def daily_create
-    date_from = params[:date_from].blank? ? DateTime.now : DateTime.strptime( params[:date_from], '%m/%d/%Y')
-    date_to = params[:date_to].blank? ? DateTime.now : DateTime.strptime( params[:date_to], '%m/%d/%Y')
-    companies = params[:business_entities].present? ? params[:business_entities] : BusinessEntity.pluck(:id)
-    lead_sources = params[:leads_sources].present? ? params[:leads_sources] : LeadSource.pluck(:id)
-    @report = case params[:lead_status]
+    date_from = params[:filter][:date_from].blank? ? DateTime.now : DateTime.strptime( params[:filter][:date_from], '%m/%d/%Y')
+    date_to = params[:filter][:date_to].blank? ? DateTime.now : DateTime.strptime( params[:filter][:date_to], '%m/%d/%Y')
+    # FIXME: after compact! [""]
+    companies = params[:filter][:business_entities].present? ? params[:filter][:business_entities].compact : BusinessEntity.pluck(:id)
+    lead_sources = params[:filter][:leads_sources].present? ? params[:filter][:leads_sources].compact : LeadSource.pluck(:id)
+    puts lead_sources.inspect
+    @report = case params[:filter][:lead_status]
                 when 'not_spam'
                   Lead.not_spam
                 when 'closed'
@@ -104,7 +106,7 @@ class LeadsController < ApplicationController
                 else
                   Lead
               end
-    @report = @report.where("contract_id IS NOT NULL") if params[:converted_to_contract].present?
+    @report = @report.where("contract_id IS NOT NULL") if params[:filter][:converted_to_contract].present? && params[:filter][:converted_to_contract].to_i != 0
     @report = @report.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
                   .joins(:lead_source)
                   .where(created_at: date_from.beginning_of_day..date_to.end_of_day,

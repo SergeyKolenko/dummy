@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1>Leads Daily</h1>
 </div>
-<%= render :partial => 'daily_form' %>
+<%= render :partial => 'daily_form', locals: { filter: @filter } %>
 <hr />
 <div id="results"></div>
