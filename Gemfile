@@ -25,8 +25,7 @@ gem 'jquery-rails'
 
 gem 'jbuilder', '~> 2.0'
 gem 'select2-rails'
-gem 'googlecharts'
-gem "google_visualr"
+gem 'google_visualr'
 
 group :test do
   gem 'rspec'
