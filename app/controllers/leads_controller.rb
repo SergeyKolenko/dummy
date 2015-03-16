@@ -90,34 +90,40 @@ class LeadsController < ApplicationController
   end
 
   def daily_create
-    date_from = params[:filter][:date_from].blank? ? DateTime.now : DateTime.strptime( params[:filter][:date_from], '%m/%d/%Y')
-    date_to = params[:filter][:date_to].blank? ? DateTime.now : DateTime.strptime( params[:filter][:date_to], '%m/%d/%Y')
-    # FIXME: after compact! [""]
-    companies = params[:filter][:business_entities].present? ? params[:filter][:business_entities].compact : BusinessEntity.pluck(:id)
-    lead_sources = params[:filter][:leads_sources].present? ? params[:filter][:leads_sources].compact : LeadSource.pluck(:id)
-    puts lead_sources.inspect
-    @report = case params[:filter][:lead_status]
-                when 'not_spam'
-                  Lead.not_spam
-                when 'closed'
-                  Lead.closed
-                when 'not_closed'
-                  Lead.opened
-                else
-                  Lead
-              end
-    @report = @report.where("contract_id IS NOT NULL") if params[:filter][:converted_to_contract].present? && params[:filter][:converted_to_contract].to_i != 0
-    @report = @report.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
-                  .joins(:lead_source)
-                  .where(created_at: date_from.beginning_of_day..date_to.end_of_day,
-                         interested_company_id: companies,
-                          lead_source_id: lead_sources)
-                  .group(%{ date })
-    respond_to do |format|
-      format.js do
-          @chart = build_chart @report
+    if filter_valid?
+      date_from = DateTime.strptime( params[:filter][:date_from], '%m/%d/%Y')
+      date_to =  DateTime.strptime( params[:filter][:date_to], '%m/%d/%Y')
+      companies =  params[:filter][:business_entities].compact
+      lead_sources =  params[:filter][:leads_sources].compact
+      @report = case params[:filter][:lead_status]
+                  when 'not_spam'
+                    Lead.not_spam
+                  when 'closed'
+                    Lead.closed
+                  when 'not_closed'
+                    Lead.opened
+                  else
+                    Lead
+                end
+      @report = @report.where("contract_id IS NOT NULL") if params[:filter][:converted_to_contract].present? &&
+                                                            params[:filter][:converted_to_contract].to_i != 0
+      @report = @report.select(%{ DATE("leads"."created_at") as date, COUNT("leads"."id") as cnt })
+                    .joins(:lead_source)
+                    .where(created_at: date_from.beginning_of_day..date_to.end_of_day,
+                           interested_company_id: companies,
+                            lead_source_id: lead_sources)
+                    .group(%{ date })
+      respond_to do |format|
+        format.js { @chart = build_chart @report }
+        format.csv { send_data build_csv(@report), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=leads_daily.csv"}
       end
-      format.csv { send_data build_csv(@report), :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=leads_daily.csv"}
+    else
+      respond_to do |format|
+        flash.now[:error] = 'Bab filter params!'
+        format.js
+        format.csv
+      end
+
     end
   end
 
@@ -144,6 +150,21 @@ class LeadsController < ApplicationController
         csv << [item.date, item.cnt]
       end
     end
+  end
+
+  def filter_valid?
+    if !params[:filter].present? ||
+        params[:filter][:date_from].blank? ||
+        params[:filter][:date_to].blank? ||
+        !params[:filter][:business_entities].present? ||
+        params[:filter][:business_entities] == [""] ||
+        !params[:filter][:leads_sources].present? ||
+        params[:filter][:leads_sources] == [""]
+      return false
+    else
+      return true
+    end
+
   end
 
 end

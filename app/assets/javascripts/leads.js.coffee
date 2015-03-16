@@ -11,5 +11,17 @@ $ ->
       $('#filter_business_entities').trigger 'change'
 
   $('#download_csv').click ->
-    params = '?' + $("#filter_form").serialize()
-    $(this).attr 'href', $(this).attr('href') + params
+    if is_filter_valid()
+      params = '?' + $("#filter_form").serialize()
+      $(this).attr 'href', $(this).attr('href') + params
+    else
+      $('#invalid').show()
+      $(document).scrollTop 0
+      false
+
+
+  is_filter_valid = ->
+    unless $('#filter_date_from').val() || $('#filter_date_to').val() || $('#filter_business_entities').val() || $('#filter_leads_sources').val()
+      false
+    else
+      true
